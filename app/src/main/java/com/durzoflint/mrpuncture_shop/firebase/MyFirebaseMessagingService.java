@@ -1,16 +1,26 @@
-package com.durzoflint.mrpuncture_shop;
+package com.durzoflint.mrpuncture_shop.firebase;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService{
     String CHANNEL_ID = "MyChannelId";
+
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d("Abhinav2", "Refreshed token: " + refreshedToken);
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
