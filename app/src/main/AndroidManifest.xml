@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.durzoflint.mrpuncture_shop">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,9 +20,6 @@
         </activity>
 
         <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@android:drawable/ic_notification_clear_all" />
-        <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorSecondary" />
 
@@ -30,7 +29,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".PreviousOrdersActivity"></activity>
+        <activity android:name=".PreviousOrdersActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>

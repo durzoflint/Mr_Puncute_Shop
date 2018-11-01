@@ -3,9 +3,9 @@ package com.durzoflint.mrpuncture_shop.firebase;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -16,18 +16,28 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static com.durzoflint.mrpuncture_shop.LoginActivity.LOGIN_PREFS;
+import static com.durzoflint.mrpuncture_shop.LoginActivity.USER_ID;
+
 public class MyFirebaseMessagingService extends FirebaseMessagingService{
     public static final String SHOPS = "shops";
+    public static final String TOKEN = "token";
     String CHANNEL_ID = "MyChannelId";
 
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
 
-        Log.d("Abhinav", "Refreshed token: " + s);
-
-        //Todo: The index needs to be in shared prefs which is unique for every user. Refer the sql table
-        sendTokenToServer(s, SHOPS, 1+"");
+        SharedPreferences sharedPreferences = getSharedPreferences(LOGIN_PREFS, Context
+                .MODE_PRIVATE);
+        String id = sharedPreferences.getString(USER_ID, "");
+        if (!id.isEmpty()) {
+            sendTokenToServer(s, SHOPS, id);
+        } else {
+            SharedPreferences firebasePreferences = getSharedPreferences(LOGIN_PREFS, Context
+                    .MODE_PRIVATE);
+            firebasePreferences.edit().putString(TOKEN, s).apply();
+        }
     }
 
     private void sendTokenToServer(String s, String table, String index) {
