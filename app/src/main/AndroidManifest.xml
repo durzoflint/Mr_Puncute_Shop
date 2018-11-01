@@ -29,9 +29,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".PreviousOrdersActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".UserActivity"></activity>
     </application>
 
 </manifest>
