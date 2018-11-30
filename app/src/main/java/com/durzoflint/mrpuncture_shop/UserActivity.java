@@ -22,7 +22,12 @@ public class UserActivity extends AppCompatActivity {
 
     public static final String USERS = "users";
     String userId;
+    String name;
     String orderId;
+    String number;
+    TextView numberTV;
+    Button negativeButton;
+    Button positiveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,20 +37,26 @@ public class UserActivity extends AppCompatActivity {
         Intent intent = getIntent();
         ArrayList<String> user = intent.getStringArrayListExtra(USER);
 
-        TextView name = findViewById(R.id.name);
-        TextView statusTV = findViewById(R.id.status);
-        TextView number = findViewById(R.id.number);
-
-        final Button positiveButton = findViewById(R.id.positive);
-        final Button negativeButton = findViewById(R.id.negative);
-
         orderId = user.get(0);
         userId = user.get(1);
+        name = user.get(2);
         String status = user.get(3);
+        number = user.get(4);
 
-        name.setText(user.get(2));
+        updateUI(status);
+    }
+
+    private void updateUI(String status) {
+        TextView nameTV = findViewById(R.id.name);
+        TextView statusTV = findViewById(R.id.status);
+        numberTV = findViewById(R.id.number);
+
+        positiveButton = findViewById(R.id.positive);
+        negativeButton = findViewById(R.id.negative);
+
+        nameTV.setText(name);
         statusTV.setText(status);
-        number.setText(user.get(4));
+        numberTV.setText(number);
 
         switch (status) {
             case "pending":
@@ -56,9 +67,11 @@ public class UserActivity extends AppCompatActivity {
                 statusTV.setText("Pending");
                 break;
             case "approved":
-                number.setVisibility(View.VISIBLE);
+                numberTV.setVisibility(View.VISIBLE);
                 negativeButton.setVisibility(View.VISIBLE);
                 negativeButton.setText("Cancel");
+                positiveButton.setVisibility(View.VISIBLE);
+                positiveButton.setText("Complete");
                 statusTV.setText("Approved");
                 break;
             case "completed":
@@ -97,9 +110,62 @@ public class UserActivity extends AppCompatActivity {
                     new Notify().execute(userId, USERS, "Request Approved", "Your Request has " +
                             "been approved.");
                     Toast.makeText(UserActivity.this, "Order Approved", Toast.LENGTH_SHORT).show();
+                } else if (positiveButton.getText().toString().equals("Complete")) {
+                    new ChangeStatus().execute("completed");
+                    new Notify().execute(userId, USERS, "Request Completed", "Your Request has " +
+                            "been completed");
+                    Toast.makeText(UserActivity.this, "Request Completed", Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
         });
+    }
+
+    class FetchStatus extends AsyncTask<Void, Void, Void> {
+        String baseUrl = "http://www.mrpuncture.com/app/";
+        String webPage = "";
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            URL url;
+            HttpURLConnection urlConnection = null;
+            try {
+                String myURL = baseUrl + "updatestatus.php?i=" + orderId;
+                myURL = myURL.replaceAll(" ", "%20");
+                myURL = myURL.replaceAll("\'", "%27");
+                myURL = myURL.replaceAll("\'", "%22");
+                myURL = myURL.replaceAll("\\(", "%28");
+                myURL = myURL.replaceAll("\\)", "%29");
+                myURL = myURL.replaceAll("\\{", "%7B");
+                myURL = myURL.replaceAll("\\}", "%7B");
+                myURL = myURL.replaceAll("\\]", "%22");
+                myURL = myURL.replaceAll("\\[", "%22");
+                url = new URL(myURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection
+                        .getInputStream()));
+                String data;
+                while ((data = br.readLine()) != null)
+                    webPage = webPage + data;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            String status = webPage;
+
+            numberTV.setVisibility(View.GONE);
+            negativeButton.setVisibility(View.GONE);
+            positiveButton.setVisibility(View.GONE);
+            updateUI(status);
+        }
     }
 
     class ChangeStatus extends AsyncTask<String, Void, Void> {
@@ -135,6 +201,12 @@ public class UserActivity extends AppCompatActivity {
                     urlConnection.disconnect();
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            new FetchStatus().execute();
         }
     }
 
