@@ -36,14 +36,29 @@
             android:text="Status"
             android:visibility="gone" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+        <LinearLayout
+            android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:background="@color/colorAccent"
-            android:text="Button"
-            android:textColor="@android:color/white"
-            android:visibility="gone" />
+            android:layout_width="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/negative"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@color/colorAccent"
+                android:text="Negative"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/positive"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="4dp"
+                android:background="@color/colorAccent"
+                android:text="Positive"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

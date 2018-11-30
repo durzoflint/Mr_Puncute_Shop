@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -50,8 +52,7 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         } else {
-            SharedPreferences firebasePreferences = getSharedPreferences(LOGIN_PREFS, Context
-                    .MODE_PRIVATE);
+            SharedPreferences firebasePreferences = getSharedPreferences(LOGIN_PREFS, Context.MODE_PRIVATE);
             String token = firebasePreferences.getString(TOKEN, "");
             if (!token.isEmpty()) {
                 new SendTokenToServer().execute(token, id);
@@ -59,6 +60,27 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         new FetchOrders().execute(id);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.logout:
+                SharedPreferences sharedPreferences = getSharedPreferences(LOGIN_PREFS, Context
+                        .MODE_PRIVATE);
+                sharedPreferences.edit().putString(USER_ID, "").apply();
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupRecyclerView(final List<Store> stores) {
@@ -130,8 +152,7 @@ public class HomeActivity extends AppCompatActivity {
             String response[] = webPage.split("<br>");
             stores = new ArrayList<>();
             for (int i = 0, k = 0; k < response.length / 4; i += 4, k++) {
-                stores.add(new Store(response[i], response[i + 1], response[i + 2], response[i +
-                        3]));
+                stores.add(new Store(response[i], response[i + 1], response[i + 2], response[i + 3]));
             }
             setupRecyclerView(stores);
         }

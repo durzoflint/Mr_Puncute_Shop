@@ -24,7 +24,8 @@ public class UserActivity extends AppCompatActivity {
         TextView status = findViewById(R.id.status);
         TextView number = findViewById(R.id.number);
 
-        Button button = findViewById(R.id.button);
+        Button positive = findViewById(R.id.positive);
+        Button negative = findViewById(R.id.negative);
 
         name.setText(user.get(1));
         status.setText(user.get(2));
@@ -32,13 +33,14 @@ public class UserActivity extends AppCompatActivity {
 
         switch (user.get(2)) {
             case "pending":
-                button.setText("Accept");
                 break;
-            case "accepted":
-                button.setText("Complete");
+            case "approved":
                 break;
             case "completed":
-                button.setText("Completed");
+                break;
+            case "cancelled_by_shop":
+                break;
+            case "cancelled_by_user":
                 break;
         }
     }
