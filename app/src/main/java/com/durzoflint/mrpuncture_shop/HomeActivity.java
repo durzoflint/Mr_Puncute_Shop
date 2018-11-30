@@ -35,6 +35,7 @@ public class HomeActivity extends AppCompatActivity {
     public static final String USER = "user";
     List<Store> stores;
     LinearLayout progress;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(LOGIN_PREFS, Context
                 .MODE_PRIVATE);
-        String id = sharedPreferences.getString(USER_ID, "");
+        id = sharedPreferences.getString(USER_ID, "");
         if (id.isEmpty()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
@@ -57,7 +58,11 @@ public class HomeActivity extends AppCompatActivity {
                 new SendTokenToServer().execute(token, id);
             }
         }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         new FetchOrders().execute(id);
     }
 
