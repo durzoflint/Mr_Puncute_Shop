@@ -33,7 +33,24 @@ public class Recycler_View_Adapter extends RecyclerView.Adapter<View_Holder> {
     @Override
     public void onBindViewHolder(View_Holder holder, int position) {
         holder.name.setText(list.get(position).name);
-        holder.status.setText(list.get(position).status);
+
+        switch (list.get(position).status) {
+            case "pending":
+                holder.status.setText("Pending");
+                break;
+            case "approved":
+                holder.status.setText("Approved");
+                break;
+            case "completed":
+                holder.status.setText("Completed");
+                break;
+            case "cancelled_by_shop":
+                holder.status.setText("Cancelled By You");
+                break;
+            case "cancelled_by_user":
+                holder.status.setText("Cancelled By User");
+                break;
+        }
     }
 
     @Override

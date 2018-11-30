@@ -26,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:visibility="gone"
             android:text="Number" />
 
         <TextView
@@ -33,8 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Status"
-            android:visibility="gone" />
+            android:text="Status" />
 
         <LinearLayout
             android:layout_height="wrap_content"
@@ -47,8 +47,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_margin="4dp"
-                android:background="@color/colorAccent"
+                android:background="@android:color/holo_red_light"
                 android:text="Negative"
+                android:visibility="gone"
                 android:textColor="@android:color/white" />
 
             <Button
@@ -56,6 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_margin="4dp"
+                android:visibility="gone"
                 android:background="@color/colorAccent"
                 android:text="Positive"
                 android:textColor="@android:color/white" />

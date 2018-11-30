@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
+import com.durzoflint.mrpuncture_shop.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -77,7 +78,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setSmallIcon(android.R.drawable.ic_notification_clear_all)
+                    .setSmallIcon(android.R.drawable.radiobutton_on_background)
+                    .setColor(getResources().getColor(R.color.colorSecondary))
                     .setContentTitle(remoteMessage.getNotification().getTitle())
                     .setContentText(remoteMessage.getNotification().getBody())
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);

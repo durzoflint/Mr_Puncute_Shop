@@ -40,7 +40,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        setTitle("On Going Orders");
 
         progress = findViewById(R.id.progress_layout);
         progress.setVisibility(View.VISIBLE);
@@ -93,7 +92,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 ArrayList<String> shop = new ArrayList<>();
-                shop.add(stores.get(position).id);
+                shop.add(stores.get(position).orderId);
+                shop.add(stores.get(position).userId);
                 shop.add(stores.get(position).name);
                 shop.add(stores.get(position).status);
                 shop.add(stores.get(position).number);
@@ -151,8 +151,9 @@ public class HomeActivity extends AppCompatActivity {
 
             String response[] = webPage.split("<br>");
             stores = new ArrayList<>();
-            for (int i = 0, k = 0; k < response.length / 4; i += 4, k++) {
-                stores.add(new Store(response[i], response[i + 1], response[i + 2], response[i + 3]));
+            for (int i = 0, k = 0; k < response.length / 5; i += 5, k++) {
+                stores.add(new Store(response[i], response[i + 1], response[i + 2], response[i +
+                        3], response[i + 4]));
             }
             setupRecyclerView(stores);
         }
