@@ -56,6 +56,7 @@ public class HomeActivity extends AppCompatActivity {
             String token = firebasePreferences.getString(TOKEN, "");
             if (!token.isEmpty()) {
                 new SendTokenToServer().execute(token, id);
+                firebasePreferences.edit().putString(TOKEN, "").apply();
             }
         }
     }

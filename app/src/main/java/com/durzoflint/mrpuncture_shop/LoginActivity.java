@@ -32,10 +32,10 @@ public class LoginActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText email = findViewById(R.id.email);
+                EditText phone = findViewById(R.id.phone);
                 EditText password = findViewById(R.id.password);
 
-                new Login().execute(email.getText().toString(), password.getText().toString(),
+                new Login().execute(phone.getText().toString(), password.getText().toString(),
                         "shops");
             }
         });
@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                 myURL = myURL.replaceAll("\\}", "%7B");
                 myURL = myURL.replaceAll("\\]", "%22");
                 myURL = myURL.replaceAll("\\[", "%22");
+                myURL = myURL.replaceAll("\\+", "%2B");
                 url = new URL(myURL);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection
