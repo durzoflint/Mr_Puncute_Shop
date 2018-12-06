@@ -52,11 +52,10 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         } else {
-            SharedPreferences firebasePreferences = getSharedPreferences(LOGIN_PREFS, Context.MODE_PRIVATE);
-            String token = firebasePreferences.getString(TOKEN, "");
+            String token = sharedPreferences.getString(TOKEN, "");
             if (!token.isEmpty()) {
                 new SendTokenToServer().execute(token, id);
-                firebasePreferences.edit().putString(TOKEN, "").apply();
+                sharedPreferences.edit().putString(TOKEN, "").apply();
             }
         }
     }

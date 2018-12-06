@@ -48,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
                     intent.putExtra(THREE, (three.isChecked() ? "y" : "n"));
                     intent.putExtra(TWO, (two.isChecked() ? "y" : "n"));
                     startActivity(intent);
+                    finish();
                 }
             }
         });
